@@ -1,9 +1,10 @@
-name: CI + Deploy
+name: CI
 
 on:
   push:
-    branches: [main]
-    
+    branches:
+      - main
+      - darunbjork-patch-1
   pull_request:
     branches: [main]
 
