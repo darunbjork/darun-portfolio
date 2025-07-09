@@ -1,10 +1,9 @@
 import * as request from 'supertest';
 import * as express from 'express';
-import { uptime } from 'process';
 
 const app = express.default();
 app.get('/healthz', (_: express.Request, res: express.Response) => {
-    res.status(200).json({ status: 'ok', uptime: process.uptime()});
+  res.status(200).json({ status: 'ok', uptime: process.uptime() });
 });
 
 describe('GET /healthz', () => {

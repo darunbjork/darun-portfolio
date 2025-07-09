@@ -1,7 +1,4 @@
 {
   "files": [],
-  "references": [
-    { "path": "./packages/types" },
-    { "path": "./apps/api" }
-  ]
+  "references": [{ "path": "./packages/types" }, { "path": "./apps/api" }]
 }

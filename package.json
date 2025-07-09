@@ -6,11 +6,18 @@
   "main": "index.js",
   "scripts": {
     "prepare": "husky install",
+    "format": "prettier --write .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "lint-staged": {
-    "apps/**/*.{js,ts,tsx}": ["eslint --fix --max-warnings=0", "prettier --write"],
-    "packages/**/*.{js,ts,tsx}": ["eslint --fix --max-warnings=0", "prettier --write"]
+    "apps/**/*.{js,ts,tsx}": [
+      "eslint --fix --max-warnings=0",
+      "prettier --write"
+    ],
+    "packages/**/*.{js,ts,tsx}": [
+      "eslint --fix --max-warnings=0",
+      "prettier --write"
+    ]
   },
   "keywords": [],
   "author": "",

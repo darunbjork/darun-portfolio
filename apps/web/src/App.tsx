@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react';
 // import { BrandHeading } from 'ui';
-import { BrandHeading } from './components/BrandHeading'; 
+import { BrandHeading } from './components/BrandHeading';
 
 function App() {
   return (

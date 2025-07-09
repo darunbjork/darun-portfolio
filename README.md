@@ -1,10 +1,10 @@
 ## Environments
 
-| Environment | Branch | URL / Strategy |
-|-------------|--------|----------------|
-| Development | Local  | `localhost:4000` |
+| Environment | Branch | URL / Strategy          |
+| ----------- | ------ | ----------------------- |
+| Development | Local  | `localhost:4000`        |
 | Staging     | main   | GitHub Actions → Deploy |
-| Production  | manual | TBD |
+| Production  | manual | TBD                     |
 
 ### Secrets (CI)
 

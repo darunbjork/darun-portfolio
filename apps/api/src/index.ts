@@ -1,5 +1,5 @@
 import express from 'express';
-import userRoutes from './routes/user.routes'; 
+import userRoutes from './routes/user.routes';
 import { logger } from './utils/logger';
 import { metricsMiddleware } from './metrics';
 import { ENV } from './config/env';
@@ -31,10 +31,17 @@ app.get('/metrics', metricsMiddleware);
 app.use('/api', userRoutes);
 
 // Catch errors centrally
-app.use((err: Error, req: express.Request, res: express.Response, _next: express.NextFunction) => {
-  logger.error(err.message, { stack: err.stack });
-  res.status(500).json({ error: 'Something went wrong' });
-});
+app.use(
+  (
+    err: Error,
+    req: express.Request,
+    res: express.Response, // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _next: express.NextFunction,
+  ) => {
+    logger.error(err.message, { stack: err.stack });
+    res.status(500).json({ error: 'Something went wrong' });
+  },
+);
 
 app.listen(ENV.PORT, () => {
   logger.info(` API running at http://localhost:${ENV.PORT}`);

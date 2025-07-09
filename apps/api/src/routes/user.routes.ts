@@ -38,4 +38,3 @@ router.get('/users', getUsers);
 router.post('/users', createUser as RequestHandler);
 
 export default router;
-

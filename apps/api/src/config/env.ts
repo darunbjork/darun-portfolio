@@ -5,7 +5,7 @@ import { z } from 'zod';
 dotenv.config({
   path: path.resolve(
     process.cwd(),
-    process.env.NODE_ENV === 'staging' ? '.env.staging' : '.env'
+    process.env.NODE_ENV === 'staging' ? '.env.staging' : '.env',
   ),
 });
 
