@@ -1,25 +1,15 @@
-version: '3.8'
-
 services:
-  mongo:
-    image: mongo:6.0
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo-data:/data/db
-
   api:
+    container_name: darun-api
     build:
       context: ../..
       dockerfile: Dockerfile.api
     ports:
-      - "4000:4000"
-    depends_on:
-      - mongo
+      - '${PORT:-4000}:4000'
     env_file:
       - .env
     volumes:
       - ../..:/app
-
-volumes:
-  mongo-data:
+      - /app/node_modules
+    mem_limit: 2g
+    restart: unless-stopped
