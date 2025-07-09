@@ -1,11 +1,15 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import path from 'path';
 import userRoutes from './routes/user.routes'; 
 import expressWinston from 'express-winston';
 import { logger } from './utils/logger';
 import { metricsMiddleware } from './metrics';
 
-dotenv.config();
+const envFile = `.env.${process.env.NODE_ENV || 'development'}`;
+dotenv.config({ path: path.resolve(__dirname, '..', envFile) });
+
+console.log(`[] Loaded environment: ${process.env.NODE_ENV}`);
 
 const app = express();
 const PORT = process.env.PORT || 4000;

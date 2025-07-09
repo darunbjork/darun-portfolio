@@ -1,13 +1,11 @@
-name: CI
+name: CI + Deploy
 
 on:
   push:
-    branches:
-      - main
-      - darunbjork-patch-1
+    branches: [main]
+    
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   build:
@@ -31,3 +29,14 @@ jobs:
 
       - name: Build
         run: pnpm --filter api build
+
+  deploy-staging:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Echo deployment target
+        run: echo " Deploying to staging with NODE_ENV=${{ secrets.NODE_ENV }}"
