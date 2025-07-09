@@ -3,7 +3,7 @@ import userRoutes from './routes/user.routes';
 import expressWinston from 'express-winston';
 import { logger } from './utils/logger';
 import { metricsMiddleware } from './metrics';
-import { ENV } from '../config/env';
+import { ENV } from './config/env';
 
 console.log(`[] Loaded environment: ${ENV.NODE_ENV}`);
 
@@ -12,14 +12,11 @@ const PORT = ENV.PORT;
 
 app.use(express.json());
 
-app.use(
-  expressWinston.logger({
-    winstonInstance: logger,
-    meta: true,
-    msg: '{{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms',
-    colorize: false,
-  }),
-);
+// Logging example
+app.use((req, res, next) => {
+  logger.info(`Incoming request: ${req.method} ${req.path}`);
+  next();
+});
 
 app.get('/healthz', (_, res) => {
   res.status(200).json({ status: 'ok', timestamp: Date.now() });
@@ -35,8 +32,14 @@ app.get('/metrics', metricsMiddleware);
 // ✅ This is critical
 app.use('/api', userRoutes);
 
+// Catch errors centrally
+app.use((err: any, req: any, res: any, next: any) => {
+  logger.error(err.message, { stack: err.stack });
+  res.status(500).json({ error: 'Something went wrong' });
+});
+
 app.listen(ENV.PORT, () => {
-  console.log(` API running at http://localhost:${ENV.PORT}`);
+  logger.info(` API running at http://localhost:${ENV.PORT}`);
 });
 
 

@@ -11,7 +11,7 @@
       "types": ["../../packages/types/src"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "src/config"],
   "references": [
     { "path": "../../packages/types" }
   ],

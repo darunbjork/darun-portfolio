@@ -4,21 +4,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const dotenv_1 = __importDefault(require("dotenv"));
 const user_routes_1 = __importDefault(require("./routes/user.routes"));
-const express_winston_1 = __importDefault(require("express-winston"));
 const logger_1 = require("./utils/logger");
 const metrics_1 = require("./metrics");
-dotenv_1.default.config();
+const env_1 = require("./config/env");
+console.log(`[] Loaded environment: ${env_1.ENV.NODE_ENV}`);
 const app = (0, express_1.default)();
-const PORT = process.env.PORT || 4000;
+const PORT = env_1.ENV.PORT;
 app.use(express_1.default.json());
-app.use(express_winston_1.default.logger({
-    winstonInstance: logger_1.logger,
-    meta: true,
-    msg: '{{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms',
-    colorize: false,
-}));
+// Logging example
+app.use((req, res, next) => {
+    logger_1.logger.info(`Incoming request: ${req.method} ${req.path}`);
+    next();
+});
 app.get('/healthz', (_, res) => {
     res.status(200).json({ status: 'ok', timestamp: Date.now() });
 });
@@ -29,6 +27,11 @@ app.get('/readyz', (_, res) => {
 app.get('/metrics', metrics_1.metricsMiddleware);
 // ✅ This is critical
 app.use('/api', user_routes_1.default);
-app.listen(PORT, () => {
-    console.log(` API running at http://localhost:${PORT}`);
+// Catch errors centrally
+app.use((err, req, res, next) => {
+    logger_1.logger.error(err.message, { stack: err.stack });
+    res.status(500).json({ error: 'Something went wrong' });
+});
+app.listen(env_1.ENV.PORT, () => {
+    logger_1.logger.info(` API running at http://localhost:${env_1.ENV.PORT}`);
 });
