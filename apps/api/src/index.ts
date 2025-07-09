@@ -1,18 +1,14 @@
 import express from 'express';
-import dotenv from 'dotenv';
-import path from 'path';
 import userRoutes from './routes/user.routes'; 
 import expressWinston from 'express-winston';
 import { logger } from './utils/logger';
 import { metricsMiddleware } from './metrics';
+import { ENV } from '../config/env';
 
-const envFile = `.env.${process.env.NODE_ENV || 'development'}`;
-dotenv.config({ path: path.resolve(__dirname, '..', envFile) });
-
-console.log(`[] Loaded environment: ${process.env.NODE_ENV}`);
+console.log(`[] Loaded environment: ${ENV.NODE_ENV}`);
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = ENV.PORT;
 
 app.use(express.json());
 
@@ -39,8 +35,8 @@ app.get('/metrics', metricsMiddleware);
 // ✅ This is critical
 app.use('/api', userRoutes);
 
-app.listen(PORT, () => {
-  console.log(` API running at http://localhost:${PORT}`);
+app.listen(ENV.PORT, () => {
+  console.log(` API running at http://localhost:${ENV.PORT}`);
 });
 
 
