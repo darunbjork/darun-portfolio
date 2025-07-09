@@ -11,6 +11,7 @@ RUN corepack enable && corepack prepare pnpm@8.15.5 --activate
 COPY . .
 
 # Install ALL dependencies
+RUN npm install -g express-winston @types/express-winston
 RUN echo "y" | pnpm install
 
 # Build only the API
