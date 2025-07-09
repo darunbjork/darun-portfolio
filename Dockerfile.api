@@ -1,0 +1,21 @@
+# Use official Node image
+FROM node:20-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Enable pnpm globally
+RUN corepack enable && corepack prepare pnpm@8.15.5 --activate
+
+# Copy monorepo files
+COPY . .
+
+# Install ALL dependencies
+RUN echo "y" | pnpm install
+
+# Build only the API
+WORKDIR /app/apps/api
+RUN pnpm build
+
+# Run the built app
+CMD ["node", "dist/index.js"]

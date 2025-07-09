@@ -1,0 +1,15 @@
+services:
+  api:
+    container_name: darun-api
+    build:
+      context: ../..
+      dockerfile: Dockerfile.api
+    ports:
+      - "${PORT:-4000}:4000"
+    env_file:
+      - .env
+    volumes:
+      - ../..:/app
+      - /app/node_modules
+    mem_limit: 2g
+    restart: unless-stopped

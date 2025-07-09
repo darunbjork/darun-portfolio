@@ -23,16 +23,17 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const request = __importStar(require("supertest"));
-const express = __importStar(require("express"));
-const app = express.default();
-app.get('/healthz', (_, res) => {
-    res.status(200).json({ status: 'ok', uptime: process.uptime() });
-});
-describe('GET /healthz', () => {
-    it('should return status ok', async () => {
-        const res = await request.default(app).get('/healthz');
-        expect(res.status).toBe(200);
-        expect(res.body.status).toBe('ok');
-    });
-});
+exports.swaggerSpec = void 0;
+const swaggerJSDoc = __importStar(require("swagger-jsdoc"));
+const options = {
+    definition: {
+        openapi: '3.1.0',
+        info: {
+            title: 'Darun Portfolio API',
+            version: '1.0.0',
+        },
+    },
+    apis: ['./src/routes/*.ts'],
+};
+const swaggerSpec = swaggerJSDoc.default(options);
+exports.swaggerSpec = swaggerSpec;

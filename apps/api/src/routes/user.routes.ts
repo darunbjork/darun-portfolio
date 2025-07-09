@@ -29,12 +29,13 @@
  *       201:
  *         description: User created
  */
-import { Router } from 'express';
+import { Router, RequestHandler } from 'express';
 import { getUsers, createUser } from '../controllers/user.controller';
 
 const router = Router();
 
 router.get('/users', getUsers);
-router.post('/users', createUser);
+router.post('/users', createUser as RequestHandler);
 
 export default router;
+
