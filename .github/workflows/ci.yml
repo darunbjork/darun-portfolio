@@ -2,9 +2,7 @@ name: CI
 
 on:
   push:
-    branches:
-      - main
-      - darunbjork-patch-1
+    branches: [main]
   pull_request:
     branches: [main]
 
@@ -13,8 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -28,19 +25,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Run ESLint
-        run: pnpm exec eslint . --ext .ts,.tsx,.js
+      - name: Lint
+        run: pnpm lint
 
       - name: Build
         run: pnpm --filter api build
 
-  deploy-staging:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: staging
-    if: github.ref == 'refs/heads/main'
-
-    steps:
-      - name: Echo deployment target
-        run: echo " Deploying to staging with NODE_ENV=${{ secrets.NODE_ENV }}"
+      - name: Run Tests
+        run: pnpm --filter api test
