@@ -12,7 +12,9 @@ const metricsMiddleware = async (_req, res) => {
         res.setHeader('Content-Type', prom_client_1.default.register.contentType);
         res.send(metrics); // ✅ use .send instead of .end
     }
-    catch (err) {
+    catch (
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _err) {
         res.status(500).send('Error generating metrics');
     }
 };

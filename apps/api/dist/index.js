@@ -10,7 +10,6 @@ const metrics_1 = require("./metrics");
 const env_1 = require("./config/env");
 console.log(`[] Loaded environment: ${env_1.ENV.NODE_ENV}`);
 const app = (0, express_1.default)();
-const PORT = env_1.ENV.PORT;
 app.use(express_1.default.json());
 // Logging example
 app.use((req, res, next) => {
@@ -18,7 +17,7 @@ app.use((req, res, next) => {
     next();
 });
 app.get('/healthz', (_, res) => {
-    res.status(200).json({ status: 'ok', timestamp: Date.now() });
+    throw new Error('Test error from healthz');
 });
 app.get('/readyz', (_, res) => {
     const isReady = true; // later: DB, cache, etc.
@@ -28,7 +27,8 @@ app.get('/metrics', metrics_1.metricsMiddleware);
 // ✅ This is critical
 app.use('/api', user_routes_1.default);
 // Catch errors centrally
-app.use((err, req, res, next) => {
+app.use((err, req, res, // eslint-disable-next-line @typescript-eslint/no-unused-vars
+_next) => {
     logger_1.logger.error(err.message, { stack: err.stack });
     res.status(500).json({ error: 'Something went wrong' });
 });
