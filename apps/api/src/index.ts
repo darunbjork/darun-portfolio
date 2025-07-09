@@ -1,6 +1,5 @@
 import express from 'express';
 import userRoutes from './routes/user.routes'; 
-import expressWinston from 'express-winston';
 import { logger } from './utils/logger';
 import { metricsMiddleware } from './metrics';
 import { ENV } from './config/env';
@@ -8,7 +7,6 @@ import { ENV } from './config/env';
 console.log(`[] Loaded environment: ${ENV.NODE_ENV}`);
 
 const app = express();
-const PORT = ENV.PORT;
 
 app.use(express.json());
 
@@ -33,7 +31,7 @@ app.get('/metrics', metricsMiddleware);
 app.use('/api', userRoutes);
 
 // Catch errors centrally
-app.use((err: any, req: any, res: any, next: any) => {
+app.use((err: Error, req: express.Request, res: express.Response, _next: express.NextFunction) => {
   logger.error(err.message, { stack: err.stack });
   res.status(500).json({ error: 'Something went wrong' });
 });
@@ -41,6 +39,3 @@ app.use((err: any, req: any, res: any, next: any) => {
 app.listen(ENV.PORT, () => {
   logger.info(` API running at http://localhost:${ENV.PORT}`);
 });
-
-
-

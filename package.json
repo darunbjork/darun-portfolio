@@ -9,7 +9,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "lint-staged": {
-    "*.{js,ts,tsx}": ["eslint --fix", "prettier --write"]
+    "apps/**/*.{js,ts,tsx}": ["eslint --fix --max-warnings=0", "prettier --write"],
+    "packages/**/*.{js,ts,tsx}": ["eslint --fix --max-warnings=0", "prettier --write"]
   },
   "keywords": [],
   "author": "",
