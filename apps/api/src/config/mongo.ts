@@ -1,5 +1,6 @@
 import { MongoClient } from 'mongodb';
 import dotenv from 'dotenv';
+import { logger } from '../utils/logger';
 
 dotenv.config();
 
@@ -11,5 +12,6 @@ const client = new MongoClient(uri);
 
 export const connectMongo = async () => {
   await client.connect();
+  logger.info('Connected to MongoDB');
   return client.db(); // returns `darun_dev` or similar
 };

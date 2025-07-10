@@ -7,9 +7,23 @@ services:
     ports:
       - '${PORT:-4000}:4000'
     env_file:
-      - .env
+      - ../../.env
     volumes:
       - ../..:/app
       - /app/node_modules
     mem_limit: 2g
     restart: unless-stopped
+    depends_on:
+      - mongo
+
+  mongo:
+    container_name: darun-mongo
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    restart: unless-stopped
+
+volumes:
+  mongo-data:
